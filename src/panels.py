@@ -134,8 +134,5 @@ def valid_selected_procedural_bones(bones: list[bpy.types.PoseBone], target: str
 
     if control_bone.parent is None:
         return False
-    
-    if control_bone.parent.parent is None:
-        return False
 
     return True
