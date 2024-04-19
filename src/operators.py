@@ -288,6 +288,21 @@ class PreviewQuaternionProcedural(bpy.types.Operator):
         quat = Quaternion((0, 0, 0, 0))
         pos = Vector((0, 0, 0))
 
+        def align(p: Quaternion, q: Quaternion) -> Quaternion:
+            a = 0
+            b = 0
+
+            for i in range(4):
+                a += (p[i] - q[i]) * (p[i] - q[i])
+                b += (p[i] + q[i]) * (p[i] + q[i])
+
+            if a > b:
+                for i in range(4):
+                    q[i] = -q[i]
+            else:
+                for i in range(4):
+                    q[i] = q[i]
+
         for index, trigger in enumerate(triggers):
             if weights[index] == 0:
                 continue
@@ -295,6 +310,7 @@ class PreviewQuaternionProcedural(bpy.types.Operator):
             s = weights[index] * scale
 
             target_angle = Euler([radians(d) for d in trigger.target_angle]).to_quaternion()
+            align(target_angle, quat)
             quat.x = quat.x + s * target_angle.x
             quat.y = quat.y + s * target_angle.y
             quat.z = quat.z + s * target_angle.z
