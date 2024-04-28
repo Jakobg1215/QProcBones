@@ -10,7 +10,7 @@ bl_info = {
     "name": "Quaternion Procedural Bones",
     "description": "A panel that helps create procedural bones for source engine models.",
     "author": "Jakobg1215",
-    "version": (1, 1),
+    "version": (1, 2),
     "blender": (4, 0, 0),
     "location": "View3D > QProcBones",
     "tracker_url": "https://github.com/Jakobg1215/qprocbones/issues",
