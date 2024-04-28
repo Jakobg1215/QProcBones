@@ -1,6 +1,7 @@
 
 from math import degrees, radians, acos
 from typing import Set
+from bpy.types import Context
 from mathutils import Euler, Quaternion, Vector
 import bpy
 
@@ -128,6 +129,47 @@ class PreviewQuaternionTrigger(bpy.types.Operator):
         target_bone.matrix_basis = target_bone_target_difference
         target_bone.matrix_basis.translation = trigger.target_position
 
+        return {'FINISHED'}
+
+
+class MoveQuaternionTriggerDown(bpy.types.Operator):
+    bl_idname = "qprocbones.move_down_trigger"
+    bl_label = "Move Trigger Down"
+    bl_description = "Move the selected trigger down in the list"
+    bl_options = {'REGISTER'}
+
+    procedural_index: bpy.props.IntProperty()
+    trigger_index: bpy.props.IntProperty()
+
+    def execute(self, context: bpy.types.Context) -> set:
+        armature = context.object
+        procedural_bones = armature.procedural_bones
+        quaternion_bone = procedural_bones.quaternion_bones[self.procedural_index]
+
+        if self.trigger_index == len(quaternion_bone.triggers) - 1:
+            return {'FINISHED'}
+
+        quaternion_bone.triggers.move(self.trigger_index, self.trigger_index + 1)
+        return {'FINISHED'}
+
+
+class MoveQuaternionTriggerUp(bpy.types.Operator):
+    bl_idname = "qprocbones.move_up_trigger"
+    bl_label = "Move Trigger Up"
+    bl_description = "Move the selected trigger up in the list"
+    bl_options = {'REGISTER'}
+
+    procedural_index: bpy.props.IntProperty()
+    trigger_index: bpy.props.IntProperty()
+
+    def execute(self, context: bpy.types.Context) -> set:
+        if self.trigger_index == 0:
+            return {'FINISHED'}
+
+        armature = context.object
+        procedural_bones = armature.procedural_bones
+        quaternion_bone = procedural_bones.quaternion_bones[self.procedural_index]
+        quaternion_bone.triggers.move(self.trigger_index, self.trigger_index - 1)
         return {'FINISHED'}
 
 

@@ -40,9 +40,9 @@ class QuaternionProceduralBonesPanel(bpy.types.Panel):
             procedural_box = procedural_col.box()
             procedural_col = procedural_box.column(align=True)
             procedural_col.prop_search(quaternion_procedural, "target_bone", armature.pose, "bones", text="Target Bone")
-            procedural_col.prop_search(quaternion_procedural, "control_bone", armature.pose, "bones", 
+            procedural_col.prop_search(quaternion_procedural, "control_bone", armature.pose, "bones",
                                        text="Control Bone")
-            
+
             if not valid_selected_procedural_bones(armature.pose.bones, quaternion_procedural.target_bone, quaternion_procedural.control_bone):
                 procedural_col = procedural_box.column(align=True)
                 remove_procedural = procedural_col.operator("qprocbones.remove_quaternion_procedural", text="Remove")
@@ -66,6 +66,16 @@ class QuaternionProceduralBonesPanel(bpy.types.Panel):
 
                     if not trigger.reveal:
                         continue
+
+                    trigger_row = trigger_col.row(align=True)
+                    trigger_up = trigger_row.operator("qprocbones.move_up_trigger", icon="TRIA_UP")
+                    trigger_up.procedural_index = procedural_index
+                    trigger_up.trigger_index = trigger_index
+
+                    trigger_down = trigger_row.operator(
+                        "qprocbones.move_down_trigger", icon="TRIA_DOWN")
+                    trigger_down.procedural_index = procedural_index
+                    trigger_down.trigger_index = trigger_index
 
                     trigger_col = trigger_box.column(align=True)
                     trigger_col.prop(trigger, "name", text="Name")
@@ -94,7 +104,7 @@ class QuaternionProceduralBonesPanel(bpy.types.Panel):
                     preview_trigger = trigger_col.operator("qprocbones.preview_trigger", text="Preview")
                     preview_trigger.procedural_index = procedural_index
                     preview_trigger.trigger_index = trigger_index
-                    
+
                     trigger_col = trigger_box.column(align=True)
                     remove_trigger = trigger_col.operator("qprocbones.remove_trigger", text="Remove")
                     remove_trigger.procedural_index = procedural_index
@@ -112,7 +122,6 @@ class QuaternionProceduralBonesPanel(bpy.types.Panel):
             procedural_col = procedural_box.column(align=True)
             remove_procedural = procedural_col.operator("qprocbones.remove_quaternion_procedural", text="Remove")
             remove_procedural.procedural_index = procedural_index
-            
 
 
 def valid_selected_procedural_bones(bones: list[bpy.types.PoseBone], target: str, control: str) -> bool:
@@ -124,12 +133,12 @@ def valid_selected_procedural_bones(bones: list[bpy.types.PoseBone], target: str
 
     if target == control:
         return False
-    
+
     target_bone = bones[target]
 
     if target_bone.parent is None:
         return False
-    
+
     control_bone = bones[control]
 
     if control_bone.parent is None:
