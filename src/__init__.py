@@ -8,7 +8,7 @@ bl_info = {
     "category": "Animation",
     "description": "A panel that helps create procedural bones for source engine models.",
     "author": "Jakobg1215",
-    "version": (2, 0, 0),
+    "version": (2, 0, 1),
     "blender": (2, 80, 0),
     "location": "View3D > Src Proc Bones",
     "tracker_url": "https://github.com/Jakobg1215/srcprocbones/issues",
@@ -273,7 +273,7 @@ class CopyQuaternionProceduralOperator(bpy.types.Operator):
         target_bone = context.object.pose.bones[active_quaternion_procedural.target_bone]
         control_bone = context.object.pose.bones[active_quaternion_procedural.control_bone]
 
-        current_position = (target_bone.parent.bone.matrix_local.transposed() @ target_bone.bone.matrix_local).to_translation()
+        current_position = (target_bone.parent.bone.matrix_local.inverted_safe() @ target_bone.bone.matrix_local).to_translation()
 
         if active_quaternion_procedural.override_position:
             current_position = Vector(active_quaternion_procedural.position_override)
