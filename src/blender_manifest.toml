@@ -1,0 +1,18 @@
+schema_version = "1.0.0"
+
+type = "add-on"
+id = "srcprocbones"
+version = "2.0.0"
+name = "Source Engine Procedural Bones"
+tagline = "A panel that create procedural bones for source engine models"
+tags = ["Animation"]
+website = "https://github.com/Jakobg1215/srcprocbones/"
+maintainer = "Jakobg1215"
+license = ["SPDX:MIT"]
+blender_version_min = "4.2.0"
+
+[permissions]
+clipboard = "Copy procedural bones script to clipboard"
+
+[build]
+paths_exclude_pattern = ["__pycache__/"]
